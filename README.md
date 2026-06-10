@@ -1,5 +1,10 @@
 # Multi-Agent Productivity OS
 
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![LangGraph](https://img.shields.io/badge/LangGraph-0.2-purple)
+![Claude](https://img.shields.io/badge/Claude-Sonnet%204-orange)
+![License](https://img.shields.io/badge/License-MIT-green)
+
 A production-grade agentic system that manages your tasks, emails, calendar, and documents through natural language — powered by Claude claude-sonnet-4-20250514 and orchestrated with LangGraph.
 
 ---
