@@ -1,1 +1,5 @@
 .env
+config/client_secrets.json
+config/google_token.json
+__pycache__/
+**/__pycache__/

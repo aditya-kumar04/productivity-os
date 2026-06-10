@@ -52,6 +52,7 @@ load_dotenv()
 # ── 3. Required packages ──────────────────────────────────────────────────────
 section("Python packages")
 REQUIRED = [
+    ("groq",                       "groq"),
     ("anthropic",                 "anthropic"),
     ("langgraph",                 "langgraph"),
     ("langchain_anthropic",       "langchain-anthropic"),
@@ -144,8 +145,8 @@ persist_dir = os.getenv("CHROMA_PERSIST_DIR", "./chroma_db")
 try:
     import chromadb as _chromadb
     client = _chromadb.PersistentClient(path=persist_dir)
-    col = client.get_or_create_collection("_setup_test")
-    client.delete_collection("_setup_test")
+    col = client.get_or_create_collection("setup_test")
+    client.delete_collection("setup_test")
     ok(f"ChromaDB ready — persisting to {persist_dir}/")
 except Exception as e:
     fail(f"ChromaDB error: {e}")
