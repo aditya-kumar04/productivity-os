@@ -13,7 +13,7 @@ from state import AgentState, AgentResult
 from tools.calendar_tools import list_upcoming_events, find_free_slots, create_event, get_event_details
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-MODEL = "llama3-8b-8192"
+MODEL = "llama-3.1-8b-instant"
 
 TOOLS_DESC = """You have access to these tools:
 - list_upcoming_events(days_ahead: int, max_results: int)

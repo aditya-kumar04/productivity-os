@@ -13,7 +13,7 @@ from state import AgentState, AgentResult
 from tools.drive_rag import list_drive_files, ingest_file, ingest_all_docs, search_docs
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-MODEL = "llama3-8b-8192"
+MODEL = "llama-3.1-8b-instant"
 
 TOOLS_DESC = """You have access to these tools:
 - search_docs(query: str, n_results: int) — semantic search over Drive docs

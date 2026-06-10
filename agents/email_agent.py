@@ -18,7 +18,7 @@ from state import AgentState, AgentResult
 from tools.gmail_tools import list_recent_emails, get_email_body, draft_email, send_email
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-MODEL = "llama3-8b-8192"
+MODEL = "llama-3.3-70b-versatile"
 
 TOOLS_DESC = """You have access to these tools:
 - list_recent_emails(max_results: int, query: str) — list emails from Gmail
