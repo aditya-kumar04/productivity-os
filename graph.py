@@ -9,9 +9,6 @@ Agents that aren't needed are skipped automatically.
 """
 
 from __future__ import annotations
-import os
-from dotenv import load_dotenv
-load_dotenv()
 
 import uuid
 
@@ -20,28 +17,16 @@ from langgraph.graph import StateGraph, START, END
 from state import AgentState
 from agents.orchestrator import plan_node, synthesise_node
 from agents.email_agent import email_agent_node
+from agents.calendar_agent import calendar_agent_node
+from agents.doc_agent import doc_agent_node
+from agents.web_agent import web_agent_node
 
 # ── Stub nodes for agents not yet implemented ─────────────────────────────────
 # Replace each stub with its real module as you build week by week.
 
-def calendar_agent_node(state: AgentState) -> dict:
-    from state import AgentResult
-    result = AgentResult(agent="calendar", success=True, output="[Calendar agent coming in Week 2]")
-    return {"results": state.get("results", []) + [result]}
-
-def doc_agent_node(state: AgentState) -> dict:
-    from state import AgentResult
-    result = AgentResult(agent="doc", success=True, output="[Doc agent coming in Week 2]")
-    return {"results": state.get("results", []) + [result]}
-
 def task_agent_node(state: AgentState) -> dict:
     from state import AgentResult
     result = AgentResult(agent="task", success=True, output="[Task agent coming in Week 3]")
-    return {"results": state.get("results", []) + [result]}
-
-def web_agent_node(state: AgentState) -> dict:
-    from state import AgentResult
-    result = AgentResult(agent="web", success=True, output="[Web agent coming in Week 3]")
     return {"results": state.get("results", []) + [result]}
 
 

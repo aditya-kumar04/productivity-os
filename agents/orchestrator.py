@@ -98,7 +98,7 @@ def synthesise_node(state: AgentState) -> dict:
     get_long_term().store(
         memory_id=f"{session_id}_latest",
         text=memory_text,
-        metadata={"session_id": session_id, "agents_used": [r.agent for r in results]},
+        metadata={"session_id": session_id, "agents_used": ", ".join([r.agent for r in results])},
     )
 
     get_short_term().append_history(session_id, "assistant", final)
