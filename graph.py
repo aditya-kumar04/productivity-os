@@ -20,14 +20,10 @@ from agents.email_agent import email_agent_node
 from agents.calendar_agent import calendar_agent_node
 from agents.doc_agent import doc_agent_node
 from agents.web_agent import web_agent_node
+from agents.task_agent import task_agent_node
 
 # ── Stub nodes for agents not yet implemented ─────────────────────────────────
 # Replace each stub with its real module as you build week by week.
-
-def task_agent_node(state: AgentState) -> dict:
-    from state import AgentResult
-    result = AgentResult(agent="task", success=True, output="[Task agent coming in Week 3]")
-    return {"results": state.get("results", []) + [result]}
 
 
 # ── Router: decides which sub-agents to run in parallel ───────────────────────
