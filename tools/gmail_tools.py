@@ -118,6 +118,10 @@ def get_email_body(message_id: str) -> dict[str, Any]:
 
 def draft_email(to: str, subject: str, body: str) -> dict[str, Any]:
     """Create a Gmail draft (does NOT send — user reviews first)."""
+    to = (to or "").strip()
+    if not to or "@" not in to:
+        return {"error": f"Invalid or missing recipient email address: '{to}'. "
+                          f"Ask the user for a valid 'to' address before drafting."}
     service = _get_service()
     mime = MIMEText(body)
     mime["to"] = to
@@ -131,6 +135,10 @@ def draft_email(to: str, subject: str, body: str) -> dict[str, Any]:
 
 def send_email(to: str, subject: str, body: str) -> dict[str, Any]:
     """Send an email immediately."""
+    to = (to or "").strip()
+    if not to or "@" not in to:
+        return {"error": f"Invalid or missing recipient email address: '{to}'. "
+                          f"Ask the user for a valid 'to' address before sending."}
     service = _get_service()
     mime = MIMEText(body)
     mime["to"] = to

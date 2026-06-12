@@ -66,9 +66,17 @@ def email_agent_node(state: AgentState) -> dict:
     system_prompt = f"""You are the Email Agent inside a multi-agent productivity system.
 Complete the given email task using the provided tools.
 - Always list emails first to understand context before drafting replies.
-- Never send emails unless explicitly instructed; prefer drafting.
+- The user's task wording determines intent: if the task says "send", "send an
+  email", or similar, you MUST call send_email (not draft_email). Only use
+  draft_email if the task explicitly says "draft" or doesn't specify sending
+  at all.
 - Be concise in your final answer.
 - Do NOT call get_email_body more than twice per task.
+- CRITICAL: If the task involves sending or drafting an email, you MUST call
+  send_email or draft_email and wait for the tool result BEFORE claiming
+  success. Never say an email was "sent" or "drafted" unless the tool result
+  confirms it (e.g. contains "message_id" or "draft_id"). If the tool result
+  contains an "error", report the failure honestly in your answer.
 {TOOLS_DESC}"""
 
     messages = [
@@ -77,6 +85,8 @@ Complete the given email task using the provided tools.
     ]
 
     final_text = ""
+    sent_or_drafted = False  # True only after a successful send_email/draft_email tool call
+
     for _ in range(5):
         response = client.chat.completions.create(
             model=MODEL,
@@ -97,12 +107,38 @@ Complete the given email task using the provided tools.
             break
 
         if "answer" in parsed:
-            final_text = parsed["answer"]
+            answer = parsed["answer"]
+            claims_send = any(
+                kw in answer.lower()
+                for kw in ["sent", "draft has been created", "drafted", "email has been"]
+            )
+            requires_action = (
+                task.context.get("send", False)
+                or "send" in task.action.lower()
+                or "draft" in task.action.lower()
+            )
+            if claims_send and requires_action and not sent_or_drafted:
+                messages.append({"role": "assistant", "content": raw})
+                messages.append({
+                    "role": "user",
+                    "content": (
+                        "You have NOT called send_email or draft_email yet. "
+                        "Do not claim the email was sent or drafted. "
+                        "Call the appropriate tool now with the correct 'to', "
+                        "'subject', and 'body' arguments."
+                    ),
+                })
+                continue
+            final_text = answer
             break
 
         if "tool" in parsed:
-            tool_result = _dispatch(parsed["tool"], parsed.get("args", {}))
-            # Serialise and hard-cap the appended result string
+            try:
+                tool_result = _dispatch(parsed["tool"], parsed.get("args", {}))
+                if parsed["tool"] in ("send_email", "draft_email") and "error" not in tool_result:
+                    sent_or_drafted = True
+            except Exception as e:
+                tool_result = {"error": str(e)}
             result_str = json.dumps(tool_result)
             if len(result_str) > 1500:
                 result_str = result_str[:1500] + "…"
@@ -112,6 +148,6 @@ Complete the given email task using the provided tools.
     result = AgentResult(
         agent="email",
         success=True,
-        output=final_text or "Email task completed.",
+        output=final_text or "Email task could not be completed within the step limit.",
     )
     return {"results": state.get("results", []) + [result]}
