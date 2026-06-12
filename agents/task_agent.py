@@ -83,7 +83,7 @@ You manage the user's tasks in Todoist.
                 tool_result = _dispatch(parsed["tool"], parsed.get("args", {}))
             except Exception as e:
                 tool_result = {"error": str(e)}
-            messages.append({"role": "assistant", "content": raw})
+                
             messages.append({"role": "assistant", "content": raw})
             messages.append({"role": "user", "content": f"Tool result: {json.dumps(tool_result)}"})
 
