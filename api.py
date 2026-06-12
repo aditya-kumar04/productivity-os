@@ -18,6 +18,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
+from dotenv import load_dotenv
+load_dotenv()
+
 from graph import build_graph
 from memory.memory import get_short_term
 from state import AgentState

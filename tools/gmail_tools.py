@@ -52,7 +52,7 @@ def _get_service():
 
 # ── Tool functions ─────────────────────────────────────────────────────────────
 
-def list_recent_emails(max_results: int = 10, query: str = "") -> list[dict[str, Any]]:
+def list_recent_emails(max_results: int = 5, query: str = "") -> list[dict[str, Any]]:
     """
     List recent emails.  `query` accepts Gmail search syntax,
     e.g. 'from:boss@example.com after:2024/01/01 subject:meeting'.

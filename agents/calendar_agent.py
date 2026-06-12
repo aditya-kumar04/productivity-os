@@ -75,7 +75,13 @@ Complete the given calendar task using the provided tools.
             break
 
         if "tool" in parsed:
-            tool_result = _dispatch(parsed["tool"], parsed.get("args", {}))
+            try:
+                tool_result = _dispatch(parsed["tool"], parsed.get("args", {}))
+            except Exception as e:
+                tool_result = {"error": str(e)}
+                final_text = f"Could not complete task: {e}"
+                break
+            
             messages.append({"role": "assistant", "content": raw})
             messages.append({"role": "user", "content": f"Tool result: {json.dumps(tool_result)}"})
 
