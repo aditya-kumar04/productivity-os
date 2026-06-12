@@ -76,7 +76,13 @@ You have access to the user's Google Drive documents via semantic search (RAG).
             break
 
         if "tool" in parsed:
-            tool_result = _dispatch(parsed["tool"], parsed.get("args", {}))
+            try:
+                tool_result = _dispatch(parsed["tool"], parsed.get("args", {}))
+            except Exception as e:
+                tool_result = {"error": str(e)}
+                final_text = f"Could not complete task: {e}"
+                break
+
             messages.append({"role": "assistant", "content": raw})
             messages.append({"role": "user", "content": f"Tool result: {json.dumps(tool_result)}"})
 
