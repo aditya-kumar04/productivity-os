@@ -24,7 +24,11 @@ from googleapiclient.http import MediaIoBaseDownload
 import chromadb
 from chromadb.utils import embedding_functions
 
-SCOPES = ["https://www.googleapis.com/auth/drive.readonly"]
+SCOPES = [
+    "https://www.googleapis.com/auth/gmail.modify",
+    "https://www.googleapis.com/auth/calendar",
+    "https://www.googleapis.com/auth/drive.readonly",
+]
 COLLECTION_NAME = "drive_documents"
 CHUNK_SIZE = 800       # characters per chunk
 CHUNK_OVERLAP = 100    # overlap between consecutive chunks

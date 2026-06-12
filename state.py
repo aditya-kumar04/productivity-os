@@ -11,7 +11,7 @@ from typing import Annotated, Any
 from langgraph.graph.message import add_messages
 from langchain_core.messages import BaseMessage
 from pydantic import BaseModel, Field
-
+import operator
 
 # ── Sub-task issued by orchestrator to a sub-agent ────────────────────────────
 
@@ -48,7 +48,7 @@ class AgentState(dict):
     messages: Annotated[list[BaseMessage], add_messages]
     user_goal: str
     plan: list[SubTask]
-    results: list[AgentResult]
+    results: Annotated[list[AgentResult], operator.add]
     final_response: str
     session_id: str
     memory_context: str
